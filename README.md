@@ -31,7 +31,7 @@ The following **additional** features are implemented:
 
 Here is a reminder on how to embed Loom videos on GitHub. Feel free to remove this reminder once you upload your README. 
 
-[Guide](https://drive.google.com/file/d/17dI1AWtzDUYzTmmIoy8d8akF-MZ9a6P9/view?usp=sharing)
+[Guide](https://drive.google.com/file/d/1fU15KZa09rz9ANu0WJ41ptEtKwifD-1t/view?usp=sharing)
 
 ## Notes
 
