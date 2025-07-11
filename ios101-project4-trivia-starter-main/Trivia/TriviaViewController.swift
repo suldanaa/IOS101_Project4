@@ -1,3 +1,4 @@
+
 //
 //  ViewController.swift
 //  Trivia
@@ -22,43 +23,45 @@ class TriviaViewController: UIViewController {
   private var currQuestionIndex = 0
   private var numCorrectQuestions = 0
   
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        addGradient()
-        questionContainerView.layer.cornerRadius = 8.0
-        // TODO: FETCH TRIVIA QUESTIONS HERE
-        func fetchQuestions(
-            category: String,
-            question: String,
-            correct_answer: String,
-            incorrect_answers: [String],
-            completion: ((TriviaQuestion) -> Void)? = nil){
-                let url = URL(string:"https://opentdb.com/api.php?amount=5&difficulty=easy")!
-                let task = URLSession.shared.dataTask(with: url){
-                    data, response, error in
-                    guard error == nil else {
-                        assertionFailure("Error: \(error!.localizedDescription)")
-                        return
-                    }
-                    guard let httpResponse = response as? HTTPURLResponse else {
-                        assertionFailure("Invalid response")
-                        return
-                    }
-                    guard let data = data, httpResponse.statusCode == 200 else {
-                        assertionFailure("Invalid response status code: \(httpResponse.statusCode)")
-                        return
-                    }
-                }
-                task.resume()
-            }
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    addGradient()
+    questionContainerView.layer.cornerRadius = 8.0
+    fetchTriviaQuestions()
+  }
+  
+  private func fetchTriviaQuestions() {
+    TriviaQuestionService.shared.fetchTriviaQuestions { [weak self] result in
+      DispatchQueue.main.async {
+        switch result {
+        case .success(let questions):
+          self?.questions = questions
+          if !questions.isEmpty {
+            self?.updateQuestion(withQuestionIndex: 0)
+          }
+        case .failure(let error):
+          print("Error fetching trivia questions: \(error)")
+          // You could show an alert to the user here
+        }
+      }
     }
+  }
   
   private func updateQuestion(withQuestionIndex questionIndex: Int) {
     currentQuestionNumberLabel.text = "Question: \(questionIndex + 1)/\(questions.count)"
     let question = questions[questionIndex]
     questionLabel.text = question.question
     categoryLabel.text = question.category
+    
+    // Combine correct and incorrect answers, then shuffle
     let answers = ([question.correctAnswer] + question.incorrectAnswers).shuffled()
+    
+    // Hide all buttons initially
+    answerButton1.isHidden = true
+    answerButton2.isHidden = true
+    answerButton3.isHidden = true
+    
+    // Show and set titles for available answers
     if answers.count > 0 {
       answerButton0.setTitle(answers[0], for: .normal)
     }
@@ -99,7 +102,7 @@ class TriviaViewController: UIViewController {
     let resetAction = UIAlertAction(title: "Restart", style: .default) { [unowned self] _ in
       currQuestionIndex = 0
       numCorrectQuestions = 0
-      updateQuestion(withQuestionIndex: currQuestionIndex)
+      fetchTriviaQuestions() // Fetch new questions for restart
     }
     alertController.addAction(resetAction)
     present(alertController, animated: true, completion: nil)
@@ -131,4 +134,3 @@ class TriviaViewController: UIViewController {
     updateToNextQuestion(answer: sender.titleLabel?.text ?? "")
   }
 }
-
