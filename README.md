@@ -4,7 +4,7 @@ Submitted by: **Suldana Abdulkadir Afrah**
 
 **Trivia** is an app that allows you to guess the answer to a variety of questions categorized by topics.
 
-Time spent: **1** hours spent in total
+Time spent: **8** hours spent in total
 
 ## Required Features
 
@@ -35,7 +35,7 @@ Here is a reminder on how to embed Loom videos on GitHub. Feel free to remove th
 
 ## Notes
 
-I haven't fully worked on it yet do to being busy this week, but I had some troubles understanding how to set up a call to the API.
+I had some troubles finding out how to piece everything together. There was a lot of moving parts when it came to calling the API, decoding it, and putting the information in the right place. I felt overwhelmed a lot by this project, but breaking it down into smaller parts and drawing visually where everything should go as well as reading up on how API calls work and how we implement them in code helped make it much more managable.
 
 ## License
 
